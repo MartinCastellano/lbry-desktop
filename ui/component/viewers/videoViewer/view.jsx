@@ -23,7 +23,7 @@ type Props = {
   source: string,
   contentType: string,
   thumbnail: string,
-  claim: Claim,
+  claim: StreamClaim,
   muted: boolean,
   volume: number,
   uri: string,
@@ -85,7 +85,8 @@ function VideoViewer(props: Props) {
   }, [uri, previousUri]);
 
   function doTrackingBuffered(e: Event, data: any) {
-    analytics.videoBufferEvent(claimId, data.currentTime);
+    console.log('data', data);
+    analytics.videoBufferEvent(claim, data);
   }
 
   function doTrackingFirstPlay(e: Event, data: any) {

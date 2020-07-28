@@ -36,7 +36,7 @@ type Analytics = {
   apiSyncTags: ({}) => void,
   tagFollowEvent: (string, boolean, ?string) => void,
   videoStartEvent: (string, number) => void,
-  videoBufferEvent: (string, number) => void,
+  videoBufferEvent: (StreamClaim, { currentTime: number, secondsToLoad: number }) => void,
   emailProvidedEvent: () => void,
   emailVerifiedEvent: () => void,
   rewardEligibleEvent: () => void,
@@ -182,9 +182,16 @@ const analytics: Analytics = {
     sendPromMetric('time_to_start', duration);
     sendMatomoEvent('Media', 'TimeToStart', claimId, duration);
   },
-  videoBufferEvent: (claimId, currentTime) => {
-    sendPromMetric('buffer');
-    sendMatomoEvent('Media', 'BufferTimestamp', claimId, currentTime * 1000);
+  videoBufferEvent: (claim, bufferData) => {
+    const { claim_id: claimId, canonical_url: canonicalUrl } = claim;
+    const timeAtBuffer = bufferData.currentTime * 1000;
+    const bufferDuration = bufferData.secondsToLoad * 1000;
+
+    // sendMatomoEvent('Media', 'BufferTimestamp', claimId, timeAtBuffer);
+    // @if TARGET='web'
+    // sendPromMetric('buffer');
+
+    //   @endif
   },
   tagFollowEvent: (tag, following) => {
     sendMatomoEvent('Tag', following ? 'Tag-Follow' : 'Tag-Unfollow', tag);
