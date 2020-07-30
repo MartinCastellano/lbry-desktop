@@ -221,7 +221,7 @@ const Header = (props: Props) => {
                 }}
                 {...homeButtonNavigationProps}
               >
-                <img src={OdyseeLogo} />
+                <img src={OdyseeLogo} className="header__odysee" />
               </Button>
 
               {/* <Button
